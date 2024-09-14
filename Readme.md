@@ -28,10 +28,6 @@ The Art Exhibition Gallery project is a Java-based simulation that models an art
 
 ## Getting Started
 
-### Prerequisites
-
-- Java Development Kit (JDK) 8 or higher
-- A Java IDE or text editor (e.g., IntelliJ IDEA, Eclipse, VS Code)
 
 ### Installation
 
