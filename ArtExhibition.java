@@ -28,13 +28,13 @@ public class ArtExhibition {
         }
     }
 
-    
+   
     public static class Gallery {
-       
+        
         private Artwork[] artworks;
         private int count;
 
-       
+        
         public Gallery(int capacity) {
             artworks = new Artwork[capacity];
             count = 0; 
@@ -51,14 +51,14 @@ public class ArtExhibition {
             }
         }
 
-        
+       
         public void listArtworks() {
             if (count == 0) {
                 System.out.println("The gallery is empty.");
             } else {
                 System.out.println("Artworks in the gallery:");
                 for (int i = 0; i < count; i++) {
-                    System.out.println(artworks[i].getDetails()); // Accessing array elements
+                    System.out.println(artworks[i].getDetails()); 
                 }
             }
         }
@@ -71,7 +71,7 @@ public class ArtExhibition {
         
         Gallery gallery = new Gallery(5);
 
-       
+        
         boolean addMoreArtworks = true;
         while (addMoreArtworks) {
             System.out.println("Enter the title of the artwork:");
