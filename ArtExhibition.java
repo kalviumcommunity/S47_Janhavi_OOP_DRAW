@@ -1,36 +1,63 @@
 public class ArtExhibition {
 
     public static void main(String[] args) {
-        Gallery gallery = new Gallery(5); 
-        gallery.menu(); 
+        Gallery gallery = new Gallery(5); // Create a gallery with a capacity of 5 artworks
+        gallery.menu(); // Display the gallery menu
     }
 
+    // Static inner class Artwork implementing encapsulation
     static class Artwork {
         private String title;
         private String artist;
         private int year;
 
+        // Constructor
         public Artwork(String title, String artist, int year) {
             this.title = title;
             this.artist = artist;
             this.year = year;
         }
 
+        // Accessor (Getter) methods
         public String getTitle() {
             return title;
         }
 
+        public String getArtist() {
+            return artist;
+        }
+
+        public int getYear() {
+            return year;
+        }
+
+        // Mutator (Setter) methods
+        public void setTitle(String title) {
+            this.title = title;
+        }
+
+        public void setArtist(String artist) {
+            this.artist = artist;
+        }
+
+        public void setYear(int year) {
+            this.year = year;
+        }
+
+        // Method to get artwork details
         public String getDetails() {
             return "Title: " + title + ", Artist: " + artist + ", Year: " + year;
         }
     }
 
+    // Static inner class Gallery implementing encapsulation
     static class Gallery {
         private Artwork[] artworks;
         private int count;
-        private static int totalArtworks = 0; 
-        private static final int galleryLimit = 100; 
+        private static int totalArtworks = 0; // Static variable to track total artworks
+        private static final int galleryLimit = 100; // Static constant for gallery limit
 
+        // Constructor
         public Gallery(int capacity) {
             if (capacity > galleryLimit) {
                 System.out.println("Cannot create a gallery with more than " + galleryLimit + " artworks.");
@@ -40,6 +67,17 @@ public class ArtExhibition {
             this.count = 0;
         }
 
+        // Accessor (Getter) for count
+        public int getCount() {
+            return count;
+        }
+
+        // Accessor (Getter) for total artworks
+        public static int getTotalArtworks() {
+            return totalArtworks;
+        }
+
+        // Add artwork to gallery
         public void addArtwork(String title, String artist, int year) {
             if (totalArtworks >= galleryLimit) {
                 System.out.println("Cannot add more artworks. Maximum gallery limit reached.");
@@ -55,6 +93,7 @@ public class ArtExhibition {
             }
         }
 
+        // List all artworks
         public void listArtworks() {
             if (count == 0) {
                 System.out.println("The gallery is empty.");
@@ -66,6 +105,7 @@ public class ArtExhibition {
             }
         }
 
+        // Delete an artwork by title
         public void deleteArtwork(String title) {
             boolean found = false;
             for (int i = 0; i < count; i++) {
@@ -86,6 +126,12 @@ public class ArtExhibition {
             }
         }
 
+        // Display total artworks using encapsulation
+        public static void displayTotalArtworks() {
+            System.out.println("Static Method: Total Artworks across all galleries: " + totalArtworks);
+        }
+
+        // Menu for gallery interaction
         public void menu() {
             java.util.Scanner scanner = new java.util.Scanner(System.in);
             while (true) {
@@ -120,10 +166,10 @@ public class ArtExhibition {
                         deleteArtwork(deleteTitle);
                         break;
                     case 4:
-                        System.out.println("Total Artworks across all galleries: " + totalArtworks);
+                        System.out.println("Total Artworks across all galleries: " + getTotalArtworks());
                         break;
                     case 5:
-                        displayTotalArtworks(); // Call the static member function
+                        displayTotalArtworks(); // Static method call
                         break;
                     case 6:
                         System.out.println("Exiting the gallery. Goodbye!");
@@ -133,11 +179,6 @@ public class ArtExhibition {
                         System.out.println("Invalid choice. Please try again.");
                 }
             }
-        }
-
-        // Static member function to display total artworks
-        public static void displayTotalArtworks() {
-            System.out.println("Static Method: Total Artworks across all galleries: " + totalArtworks);
         }
     }
 }
