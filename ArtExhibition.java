@@ -1,7 +1,7 @@
 public class ArtExhibition {
     public static void main(String[] args) {
-        Gallery gallery = new Gallery(5);
-        gallery.menu();
+        Gallery gallery = new Gallery(5); 
+        gallery.menu(); 
     }
 
     static class Artwork {
@@ -28,15 +28,29 @@ public class ArtExhibition {
         private Artwork[] artworks;
         private int count;
 
+        // Static variables
+        private static int totalArtworks = 0; 
+        private static final int galleryLimit = 100; 
+
         public Gallery(int capacity) {
+            if (capacity > galleryLimit) {
+                System.out.println("Cannot create a gallery with more than " + galleryLimit + " artworks.");
+                capacity = galleryLimit;
+            }
             this.artworks = new Artwork[capacity];
             this.count = 0;
         }
 
         public void addArtwork(String title, String artist, int year) {
+            if (totalArtworks >= galleryLimit) {
+                System.out.println("Cannot add more artworks. Maximum gallery limit reached.");
+                return;
+            }
+
             if (count < artworks.length) {
                 artworks[count] = new Artwork(title, artist, year);
                 count++;
+                totalArtworks++; 
                 System.out.println(title + " has been added to the gallery.");
             } else {
                 System.out.println("The gallery is full. Cannot add more artworks.");
@@ -64,6 +78,7 @@ public class ArtExhibition {
                     }
                     artworks[count - 1] = null;
                     count--;
+                    totalArtworks--; 
                     System.out.println(title + " has been deleted from the gallery.");
                     break;
                 }
@@ -80,7 +95,8 @@ public class ArtExhibition {
                 System.out.println("1. Add Artwork");
                 System.out.println("2. List Artworks");
                 System.out.println("3. Delete Artwork");
-                System.out.println("4. Exit");
+                System.out.println("4. Display Total Artworks");
+                System.out.println("5. Exit");
                 System.out.print("Enter your choice: ");
                 int choice = scanner.nextInt();
                 scanner.nextLine();
@@ -105,6 +121,9 @@ public class ArtExhibition {
                         deleteArtwork(deleteTitle);
                         break;
                     case 4:
+                        System.out.println("Total Artworks across all galleries: " + totalArtworks);
+                        break;
+                    case 5:
                         System.out.println("Exiting the gallery. Goodbye!");
                         scanner.close();
                         return;
