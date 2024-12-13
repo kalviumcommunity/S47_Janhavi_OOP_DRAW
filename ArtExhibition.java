@@ -1,4 +1,5 @@
 public class ArtExhibition {
+
     public static void main(String[] args) {
         Gallery gallery = new Gallery(5); 
         gallery.menu(); 
@@ -27,8 +28,6 @@ public class ArtExhibition {
     static class Gallery {
         private Artwork[] artworks;
         private int count;
-
-        // Static variables
         private static int totalArtworks = 0; 
         private static final int galleryLimit = 100; 
 
@@ -46,11 +45,10 @@ public class ArtExhibition {
                 System.out.println("Cannot add more artworks. Maximum gallery limit reached.");
                 return;
             }
-
             if (count < artworks.length) {
                 artworks[count] = new Artwork(title, artist, year);
                 count++;
-                totalArtworks++; 
+                totalArtworks++;
                 System.out.println(title + " has been added to the gallery.");
             } else {
                 System.out.println("The gallery is full. Cannot add more artworks.");
@@ -78,7 +76,7 @@ public class ArtExhibition {
                     }
                     artworks[count - 1] = null;
                     count--;
-                    totalArtworks--; 
+                    totalArtworks--;
                     System.out.println(title + " has been deleted from the gallery.");
                     break;
                 }
@@ -96,7 +94,8 @@ public class ArtExhibition {
                 System.out.println("2. List Artworks");
                 System.out.println("3. Delete Artwork");
                 System.out.println("4. Display Total Artworks");
-                System.out.println("5. Exit");
+                System.out.println("5. Display Total Artworks (Static)");
+                System.out.println("6. Exit");
                 System.out.print("Enter your choice: ");
                 int choice = scanner.nextInt();
                 scanner.nextLine();
@@ -124,6 +123,9 @@ public class ArtExhibition {
                         System.out.println("Total Artworks across all galleries: " + totalArtworks);
                         break;
                     case 5:
+                        displayTotalArtworks(); // Call the static member function
+                        break;
+                    case 6:
                         System.out.println("Exiting the gallery. Goodbye!");
                         scanner.close();
                         return;
@@ -131,6 +133,11 @@ public class ArtExhibition {
                         System.out.println("Invalid choice. Please try again.");
                 }
             }
+        }
+
+        // Static member function to display total artworks
+        public static void displayTotalArtworks() {
+            System.out.println("Static Method: Total Artworks across all galleries: " + totalArtworks);
         }
     }
 }
