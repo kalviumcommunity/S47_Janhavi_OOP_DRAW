@@ -33,22 +33,47 @@ public class ArtExhibition {
         public abstract String getDetails();
     }
 
-    // Concrete implementation of Artwork
-    static class ConcreteArtwork extends Artwork {
+    // Subclass for Paintings
+    static class Painting extends Artwork {
+        private String medium; // e.g., oil, acrylic, watercolor
 
-        public ConcreteArtwork(String title, String artist, int year) {
+        public Painting(String title, String artist, int year, String medium) {
             super(title, artist, year);
+            this.medium = medium;
+        }
+
+        public String getMedium() {
+            return medium;
         }
 
         @Override
         public String getDetails() {
-            return "Title: " + getTitle() + ", Artist: " + getArtist() + ", Year: " + getYear();
+            return "Title: " + getTitle() + ", Artist: " + getArtist() + ", Year: " + getYear() + ", Medium: " + medium;
+        }
+    }
+
+    // Subclass for Sculptures
+    static class Sculpture extends Artwork {
+        private String material; // e.g., bronze, marble, wood
+
+        public Sculpture(String title, String artist, int year, String material) {
+            super(title, artist, year);
+            this.material = material;
+        }
+
+        public String getMaterial() {
+            return material;
+        }
+
+        @Override
+        public String getDetails() {
+            return "Title: " + getTitle() + ", Artist: " + getArtist() + ", Year: " + getYear() + ", Material: " + material;
         }
     }
 
     // Interface for Gallery
     interface Gallery {
-        void addArtwork(String title, String artist, int year);
+        void addArtwork(String title, String artist, int year, String type, String extraDetail);
 
         void listArtworks();
 
@@ -89,13 +114,22 @@ public class ArtExhibition {
         }
 
         @Override
-        public void addArtwork(String title, String artist, int year) {
+        public void addArtwork(String title, String artist, int year, String type, String extraDetail) {
             if (totalArtworks >= galleryLimit) {
                 System.out.println("Gallery is full. Cannot add more artworks.");
                 return;
             }
             if (count < artworks.length) {
-                artworks[count] = new ConcreteArtwork(title, artist, year);
+                Artwork artwork;
+                if (type.equalsIgnoreCase("Painting")) {
+                    artwork = new Painting(title, artist, year, extraDetail);
+                } else if (type.equalsIgnoreCase("Sculpture")) {
+                    artwork = new Sculpture(title, artist, year, extraDetail);
+                } else {
+                    System.out.println("Invalid artwork type.");
+                    return;
+                }
+                artworks[count] = artwork;
                 count++;
                 totalArtworks++;
                 System.out.println("'" + title + "' has been added.");
@@ -160,7 +194,11 @@ public class ArtExhibition {
                         System.out.print("Enter year of creation: ");
                         int year = scanner.nextInt();
                         scanner.nextLine();
-                        addArtwork(title, artist, year);
+                        System.out.print("Enter type of artwork (Painting/Sculpture): ");
+                        String type = scanner.nextLine();
+                        System.out.print("Enter medium/material: ");
+                        String extraDetail = scanner.nextLine();
+                        addArtwork(title, artist, year, type, extraDetail);
                         break;
                     case 2:
                         listArtworks();
