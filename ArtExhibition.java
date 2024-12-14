@@ -1,21 +1,24 @@
 public class ArtExhibition {
 
     public static void main(String[] args) {
-        Gallery gallery = new ConcreteGallery(5);
-        gallery.menu();
+        Gallery gallery = new ConcreteGallery(5); // Create a gallery with a capacity of 5 artworks
+        gallery.menu(); // Display the gallery menu
     }
 
+    // Abstract class representing an Artwork
     static abstract class Artwork {
         private String title;
         private String artist;
         private int year;
 
+        // Constructor
         public Artwork(String title, String artist, int year) {
             this.title = title;
             this.artist = artist;
             this.year = year;
         }
 
+        // Accessor (Getter) methods
         public String getTitle() {
             return title;
         }
@@ -28,9 +31,11 @@ public class ArtExhibition {
             return year;
         }
 
+        // Abstract method for details
         public abstract String getDetails();
     }
 
+    // Concrete implementation of Artwork
     static class ConcreteArtwork extends Artwork {
 
         public ConcreteArtwork(String title, String artist, int year) {
@@ -43,6 +48,7 @@ public class ArtExhibition {
         }
     }
 
+    // Interface for gallery operations
     interface Gallery {
         void addArtwork(String title, String artist, int year);
 
@@ -57,12 +63,14 @@ public class ArtExhibition {
         }
     }
 
+    // Concrete implementation of Gallery
     static class ConcreteGallery implements Gallery {
         private Artwork[] artworks;
         private int count;
-        private static int totalArtworks = 0;
-        private static final int galleryLimit = 100;
+        private static int totalArtworks = 0; // Static variable to track total artworks
+        private static final int galleryLimit = 100; // Static constant for gallery limit
 
+        // Constructor
         public ConcreteGallery(int capacity) {
             if (capacity > galleryLimit) {
                 System.out.println("Cannot create a gallery with more than " + galleryLimit + " artworks.");
@@ -155,7 +163,7 @@ public class ArtExhibition {
                         deleteArtwork(deleteTitle);
                         break;
                     case 4:
-                        Gallery.displayTotalArtworks();
+                        Gallery.displayTotalArtworks(); // Static method call
                         break;
                     case 5:
                         System.out.println("Exiting the gallery. Goodbye!");
