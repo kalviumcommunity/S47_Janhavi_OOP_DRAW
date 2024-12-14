@@ -1,7 +1,11 @@
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Scanner;
+
 public class ArtExhibition {
 
     public static void main(String[] args) {
-        Gallery gallery = new ConcreteGallery(5);
+        Gallery gallery = new ConcreteGallery();
         gallery.menu();
     }
 
@@ -30,12 +34,13 @@ public class ArtExhibition {
             return year;
         }
 
+        // Abstract method for polymorphism
         public abstract String getDetails();
     }
 
     // Subclass for Paintings
     static class Painting extends Artwork {
-        private String medium; // e.g., oil, acrylic, watercolor
+        private String medium;
 
         public Painting(String title, String artist, int year, String medium) {
             super(title, artist, year);
@@ -54,7 +59,7 @@ public class ArtExhibition {
 
     // Subclass for Sculptures
     static class Sculpture extends Artwork {
-        private String material; // e.g., bronze, marble, wood
+        private String material;
 
         public Sculpture(String title, String artist, int year, String material) {
             super(title, artist, year);
@@ -81,71 +86,47 @@ public class ArtExhibition {
 
         void menu();
 
-        void close(); // Simulating destructor for cleanup
-
-        static void displayTotalArtworks() {
-            System.out.println("Total Artworks in all galleries.");
-        }
+        void close();
     }
 
     // Concrete implementation of Gallery
     static class ConcreteGallery implements Gallery {
-        private Artwork[] artworks;
-        private int count;
+        private List<Artwork> artworks;
         private static int totalArtworks = 0;
-        private static final int galleryLimit = 100;
 
-        // Constructor
-        public ConcreteGallery(int capacity) {
-            if (capacity > galleryLimit) {
-                System.out.println("Gallery capacity is limited to " + galleryLimit + ".");
-                capacity = galleryLimit;
-            }
-            this.artworks = new Artwork[capacity];
-            this.count = 0;
-            System.out.println("Gallery initialized with capacity for " + capacity + " artworks.");
-        }
-
-        // Simulated destructor
-        @Override
-        public void close() {
-            this.artworks = null; // Freeing up memory
-            System.out.println("Gallery resources cleaned up. Thank you for using the gallery!");
+        public ConcreteGallery() {
+            this.artworks = new ArrayList<>();
+            System.out.println("Gallery initialized.");
         }
 
         @Override
         public void addArtwork(String title, String artist, int year, String type, String extraDetail) {
-            if (totalArtworks >= galleryLimit) {
-                System.out.println("Gallery is full. Cannot add more artworks.");
-                return;
-            }
-            if (count < artworks.length) {
-                Artwork artwork;
-                if (type.equalsIgnoreCase("Painting")) {
+            Artwork artwork = null;
+            switch (type.toLowerCase()) {
+                case "painting":
                     artwork = new Painting(title, artist, year, extraDetail);
-                } else if (type.equalsIgnoreCase("Sculpture")) {
+                    break;
+                case "sculpture":
                     artwork = new Sculpture(title, artist, year, extraDetail);
-                } else {
+                    break;
+                default:
                     System.out.println("Invalid artwork type.");
                     return;
-                }
-                artworks[count] = artwork;
-                count++;
-                totalArtworks++;
-                System.out.println("'" + title + "' has been added.");
-            } else {
-                System.out.println("The gallery is at capacity. Cannot add more artworks.");
             }
+            artworks.add(artwork);
+            totalArtworks++;
+            System.out.println("'" + title + "' has been added.");
         }
 
         @Override
         public void listArtworks() {
-            if (count == 0) {
+            if (artworks.isEmpty()) {
                 System.out.println("The gallery is empty.");
             } else {
                 System.out.println("Gallery Artworks:");
-                for (int i = 0; i < count; i++) {
-                    System.out.println((i + 1) + ". " + artworks[i].getDetails());
+                int index = 1;
+                for (Artwork artwork : artworks) {
+                    System.out.println(index++ + ". " + artwork.getDetails());
                 }
             }
         }
@@ -153,16 +134,12 @@ public class ArtExhibition {
         @Override
         public void deleteArtwork(String title) {
             boolean found = false;
-            for (int i = 0; i < count; i++) {
-                if (artworks[i].getTitle().equalsIgnoreCase(title)) {
-                    found = true;
-                    for (int j = i; j < count - 1; j++) {
-                        artworks[j] = artworks[j + 1];
-                    }
-                    artworks[count - 1] = null;
-                    count--;
+            for (Artwork artwork : artworks) {
+                if (artwork.getTitle().equalsIgnoreCase(title)) {
+                    artworks.remove(artwork);
                     totalArtworks--;
                     System.out.println("'" + title + "' has been deleted.");
+                    found = true;
                     break;
                 }
             }
@@ -173,7 +150,7 @@ public class ArtExhibition {
 
         @Override
         public void menu() {
-            java.util.Scanner scanner = new java.util.Scanner(System.in);
+            Scanner scanner = new Scanner(System.in);
             while (true) {
                 System.out.println("\nGallery Menu:");
                 System.out.println("1. Add Artwork");
@@ -219,6 +196,12 @@ public class ArtExhibition {
                         System.out.println("Invalid choice. Please try again.");
                 }
             }
+        }
+
+        @Override
+        public void close() {
+            artworks.clear();
+            System.out.println("Gallery resources cleaned up. Thank you for using the gallery!");
         }
     }
 }
