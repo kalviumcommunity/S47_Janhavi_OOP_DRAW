@@ -9,6 +9,7 @@ public class ArtExhibition {
         gallery.menu();
     }
 
+    // Abstract base class for all artwork types
     static abstract class Artwork {
         private String title;
         private String artist;
@@ -41,6 +42,7 @@ public class ArtExhibition {
         }
     }
 
+    // Painting class extending Artwork
     static class Painting extends Artwork {
         private String medium;
 
@@ -69,6 +71,7 @@ public class ArtExhibition {
         }
     }
 
+    // Sculpture class extending Artwork
     static class Sculpture extends Artwork {
         private String material;
 
@@ -97,6 +100,7 @@ public class ArtExhibition {
         }
     }
 
+    // Gallery interface
     interface Gallery {
         void addArtwork(String title, String artist, int year, String type, String extraDetail);
         void listArtworks();
@@ -105,6 +109,7 @@ public class ArtExhibition {
         void close();
     }
 
+    // Concrete implementation of the Gallery interface
     static class ConcreteGallery implements Gallery {
         private List<Artwork> artworks;
         private static int totalArtworks = 0;
