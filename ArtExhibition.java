@@ -9,13 +9,11 @@ public class ArtExhibition {
         gallery.menu();
     }
 
-    // Abstract class for Artwork
     static abstract class Artwork {
         private String title;
         private String artist;
         private int year;
 
-        // Constructor
         public Artwork(String title, String artist, int year) {
             this.title = title;
             this.artist = artist;
@@ -34,11 +32,15 @@ public class ArtExhibition {
             return year;
         }
 
-        // Abstract method for polymorphism
         public abstract String getDetails();
+
+        public abstract String exhibitStyle();
+
+        public void display() {
+            System.out.println("This is a general artwork.");
+        }
     }
 
-    // Subclass for Paintings
     static class Painting extends Artwork {
         private String medium;
 
@@ -55,9 +57,18 @@ public class ArtExhibition {
         public String getDetails() {
             return "Title: " + getTitle() + ", Artist: " + getArtist() + ", Year: " + getYear() + ", Medium: " + medium;
         }
+
+        @Override
+        public String exhibitStyle() {
+            return "Displayed in a frame on the wall with spotlight.";
+        }
+
+        @Override
+        public void display() {
+            System.out.println("This is a painting titled: " + getTitle());
+        }
     }
 
-    // Subclass for Sculptures
     static class Sculpture extends Artwork {
         private String material;
 
@@ -74,22 +85,26 @@ public class ArtExhibition {
         public String getDetails() {
             return "Title: " + getTitle() + ", Artist: " + getArtist() + ", Year: " + getYear() + ", Material: " + material;
         }
+
+        @Override
+        public String exhibitStyle() {
+            return "Displayed on a pedestal with surrounding lighting.";
+        }
+
+        @Override
+        public void display() {
+            System.out.println("This is a sculpture titled: " + getTitle());
+        }
     }
 
-    // Interface for Gallery
     interface Gallery {
         void addArtwork(String title, String artist, int year, String type, String extraDetail);
-
         void listArtworks();
-
         void deleteArtwork(String title);
-
         void menu();
-
         void close();
     }
 
-    // Concrete implementation of Gallery
     static class ConcreteGallery implements Gallery {
         private List<Artwork> artworks;
         private static int totalArtworks = 0;
@@ -124,9 +139,10 @@ public class ArtExhibition {
                 System.out.println("The gallery is empty.");
             } else {
                 System.out.println("Gallery Artworks:");
-                int index = 1;
                 for (Artwork artwork : artworks) {
-                    System.out.println(index++ + ". " + artwork.getDetails());
+                    artwork.display();
+                    System.out.println(artwork.getDetails());
+                    System.out.println("   Exhibit Style: " + artwork.exhibitStyle());
                 }
             }
         }
@@ -134,9 +150,9 @@ public class ArtExhibition {
         @Override
         public void deleteArtwork(String title) {
             boolean found = false;
-            for (Artwork artwork : artworks) {
-                if (artwork.getTitle().equalsIgnoreCase(title)) {
-                    artworks.remove(artwork);
+            for (int i = 0; i < artworks.size(); i++) {
+                if (artworks.get(i).getTitle().equalsIgnoreCase(title)) {
+                    artworks.remove(i);
                     totalArtworks--;
                     System.out.println("'" + title + "' has been deleted.");
                     found = true;
@@ -160,7 +176,7 @@ public class ArtExhibition {
                 System.out.println("5. Exit");
                 System.out.print("Choose an option: ");
                 int choice = scanner.nextInt();
-                scanner.nextLine();
+                scanner.nextLine(); // Consume leftover newline
 
                 switch (choice) {
                     case 1:
@@ -170,7 +186,7 @@ public class ArtExhibition {
                         String artist = scanner.nextLine();
                         System.out.print("Enter year of creation: ");
                         int year = scanner.nextInt();
-                        scanner.nextLine();
+                        scanner.nextLine(); // Consume leftover newline
                         System.out.print("Enter type of artwork (Painting/Sculpture): ");
                         String type = scanner.nextLine();
                         System.out.print("Enter medium/material: ");
