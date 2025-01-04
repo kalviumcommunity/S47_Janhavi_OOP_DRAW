@@ -5,11 +5,10 @@ import java.util.Scanner;
 public class ArtExhibition {
 
     public static void main(String[] args) {
-        Gallery gallery = new ConcreteGallery();
+        ManageableGallery gallery = new ConcreteGallery();
         gallery.menu();
     }
 
-    // Abstract base class for all artwork types
     static abstract class Artwork {
         private String title;
         private String artist;
@@ -42,7 +41,6 @@ public class ArtExhibition {
         }
     }
 
-    // Painting class extending Artwork
     static class Painting extends Artwork {
         private String medium;
 
@@ -71,7 +69,6 @@ public class ArtExhibition {
         }
     }
 
-    // Sculpture class extending Artwork
     static class Sculpture extends Artwork {
         private String material;
 
@@ -100,17 +97,26 @@ public class ArtExhibition {
         }
     }
 
-    // Gallery interface
-    interface Gallery {
+
+    interface AddableGallery {
         void addArtwork(String title, String artist, int year, String type, String extraDetail);
+    }
+
+    interface ListableGallery {
         void listArtworks();
+    }
+
+    interface DeletableGallery {
         void deleteArtwork(String title);
+    }
+
+    interface ManageableGallery extends AddableGallery, ListableGallery, DeletableGallery {
         void menu();
         void close();
     }
 
-    // Concrete implementation of the Gallery interface
-    static class ConcreteGallery implements Gallery {
+   
+    static class ConcreteGallery implements ManageableGallery {
         private List<Artwork> artworks;
         private static int totalArtworks = 0;
 
@@ -181,7 +187,7 @@ public class ArtExhibition {
                 System.out.println("5. Exit");
                 System.out.print("Choose an option: ");
                 int choice = scanner.nextInt();
-                scanner.nextLine(); // Consume leftover newline
+                scanner.nextLine(); 
 
                 switch (choice) {
                     case 1:
