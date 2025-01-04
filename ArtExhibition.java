@@ -10,6 +10,7 @@ public class ArtExhibition {
     }
 
     static abstract class Artwork {
+        
         private String title;
         private String artist;
         private int year;
@@ -19,6 +20,8 @@ public class ArtExhibition {
             this.artist = artist;
             this.year = year;
         }
+
+
 
         public String getTitle() {
             return title;
